@@ -1,52 +1,60 @@
 function testLove() {
-  let vards1 = document.getElementById("vards1").value.trim();
-  let vards2 = document.getElementById("vards2").value.trim();
+  const vards1 = document.getElementById("vards1").value.trim();
+  const vards2 = document.getElementById("vards2").value.trim();
 
-  if (vards1 === "" || vards2 === "") {
+  if (!vards1 || !vards2) {
     document.getElementById("result").innerHTML = "Ievadi vārdus!";
     return;
   }
 
-  let name1 = vards1.toLowerCase().replace(/\s/g, "");
-  let name2 = vards2.toLowerCase().replace(/\s/g, "");
-  let percentage = Math.floor(Math.random() * 101);
+  const name1 = vards1.toLowerCase().replace(/\s+/g, "");
+  const name2 = vards2.toLowerCase().replace(/\s+/g, "");
 
-  if (name1.charAt(0) === name2.charAt(0)) percentage += 10;
-  if (name1.includes("an") && name2.includes("an")) percentage += 5;
-  if (name1.length === name2.length) percentage += 7;
+  let score = Math.floor(Math.random() * 61);
 
-  percentage = Math.min(100, Math.max(0, percentage));
+  if (name1.charAt(0) === name2.charAt(0)) score += 10;
+  if (name1.length === name2.length) score += 10;
 
-  let message = "";
-  let color = "pink";
-  let sound;
-
-  if (percentage > 80) {
-    message = "Ideāla saderība! 💘";
-    color = "hotpink";
-    sound = document.getElementById("sound-high");
-  } else if (percentage > 50) {
-    message = "Izskatās labi! ❤️";
-    color = "orange";
-    sound = document.getElementById("sound-mid");
-  } else {
-    message = "Tikai draugi... 💔";
-    color = "gray";
-    sound = document.getElementById("sound-low");
+  let commonLetters = 0;
+  for (let i = 0; i < name1.length; i++) {
+    if (name2.includes(name1.charAt(i))) {
+      commonLetters++;
+    }
   }
 
-  let text = `${vards1} - ${vards2}<br>`;
-  text += `Love Score: ${percentage}%<br>`;
-  text += message;
+  if (commonLetters >= 3) score += 10;
 
-  document.getElementById("result").innerHTML = text;
+  score = Math.min(100, Math.max(0, score));
 
-  // === Atjauno saderības stabiņu
-  let bar = document.getElementById("progressBar");
-  bar.style.width = percentage + "%";
-  bar.style.background = color;
+  let message = "";
+  let barColor = "pink";
 
-  // === Atskaņo skaņu
-  sound.currentTime = 0;
-  sound.play();
+  if (score > 80) {
+    message = "Ideāla saderība! 💘";
+    barColor = "hotpink";
+  } else if (score > 50) {
+    message = "Izskatās labi! ❤️";
+    barColor = "orange";
+  } else {
+    message = "Tikai draugi... 💔";
+    barColor = "gray";
+  }
+
+  const resultText = `
+    ${vards1} - ${vards2}<br>
+    Love Score: ${score}%<br>
+    ${message}
+  `;
+
+  document.getElementById("result").innerHTML = resultText;
+
+  const bar = document.getElementById("progressBar");
+  bar.style.width = score + "%";
+  bar.style.backgroundColor = barColor;
 }
+
+
+
+
+
+
