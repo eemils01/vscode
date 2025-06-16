@@ -32,9 +32,11 @@ function testLove() {
   if (score > 80) {
     message = "Ideāla saderība! 💘";
     barColor = "hotpink";
+
   } else if (score > 50) {
     message = "Izskatās labi! ❤️";
     barColor = "orange";
+    
   } else {
     message = "Tikai draugi... 💔";
     barColor = "gray";
